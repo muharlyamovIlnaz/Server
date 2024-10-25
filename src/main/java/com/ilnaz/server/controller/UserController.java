@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilnaz.server.config.DBConfiguration;
 import com.ilnaz.server.dto.UserDto;
 import com.ilnaz.server.repository.UserRepository;
+import com.ilnaz.server.repository.impl.UserRepositoryImpl;
 import com.ilnaz.server.service.UserService;
+import com.ilnaz.server.service.impl.UserServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,8 @@ public class UserController extends HttpServlet {
 
     public UserController() throws SQLException {
 
-        UserRepository userRepository = new UserRepository(DBConfiguration.getConnection());
-        userService = new UserService(userRepository);
+        UserRepository userRepository = new UserRepositoryImpl(DBConfiguration.getConnection());
+        userService = new UserServiceImpl(userRepository);
         objectMapper = new ObjectMapper();
     }
 
