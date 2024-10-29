@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/register")
-public class UserController extends HttpServlet {
+@WebServlet("/user/login")
+public class UserLoginController extends HttpServlet {
     private final UserService userService;
     private final ObjectMapper objectMapper;
 
-    public UserController() throws SQLException {
+    public UserLoginController() throws SQLException {
 
         UserRepository userRepository = new UserRepositoryImpl(DBConfiguration.getConnection());
         userService = new UserServiceImpl(userRepository);
@@ -28,7 +28,7 @@ public class UserController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
             userService.registerUser(userDto);

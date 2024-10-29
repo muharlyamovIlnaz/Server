@@ -19,4 +19,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
     }
+
+    @Override
+    public void loginUser(UserDto userDto) throws Exception {
+
+    }
 }
