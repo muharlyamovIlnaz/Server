@@ -34,7 +34,6 @@ public class TeacherRepositoryImpl implements TeacherRepository {
                 teacher.setFirstName(resultSet.getString("first_name"));
                 teacher.setSecondName(resultSet.getString("second_name"));
                 teacher.setLastName(resultSet.getString("last_name"));
-                teacher.setHavingGroup(resultSet.getBoolean("having_group"));
                 teacher.setGroupId(resultSet.getLong("group_id"));
                 teachers.add(teacher);
             }
@@ -63,7 +62,6 @@ public class TeacherRepositoryImpl implements TeacherRepository {
                 teacher.setFirstName(resultSet.getString("first_name"));
                 teacher.setSecondName(resultSet.getString("second_name"));
                 teacher.setLastName(resultSet.getString("last_name"));
-                teacher.setHavingGroup(resultSet.getBoolean("having_group"));
                 teacher.setGroupId(resultSet.getLong("group_id"));
             }
 
@@ -88,16 +86,15 @@ public class TeacherRepositoryImpl implements TeacherRepository {
     public Teacher addTeacher(Teacher teacher) {
         try {
             String sql = """
-                    INSERT INTO teacher (first_name, second_name, last_name, having_group, group_id)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO teacher (first_name, second_name, last_name, group_id)
+                    VALUES (?, ?, ?, ?)
                     """;
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, teacher.getFirstName());
             preparedStatement.setString(2, teacher.getSecondName());
             preparedStatement.setString(3, teacher.getLastName());
-            preparedStatement.setBoolean(4, teacher.isHavingGroup());
-            preparedStatement.setLong(5, teacher.getGroupId());
+            preparedStatement.setLong(4, teacher.getGroupId());
             preparedStatement.executeUpdate();
 
 
@@ -116,14 +113,13 @@ public class TeacherRepositoryImpl implements TeacherRepository {
 
     private void addTeacherSubjects(long teacherId, List<Long> subjectsId) throws SQLException {
 
-        String sql = "INSERT INTO teacher_subject (teacher_id, subject_id) VALUES (?, ?)";
+        String sql = "INSERT INTO group_teacher_subject (teacher_id, subject_id) VALUES (?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (Long subjectId : subjectsId) {
             preparedStatement.setLong(1, teacherId);
             preparedStatement.setLong(2, subjectId);
             preparedStatement.addBatch();
         }
-
         preparedStatement.executeBatch();
     }
 }

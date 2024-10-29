@@ -10,7 +10,6 @@ public class Teacher {
     private String firstName;
     private String secondName;
     private String lastName;
-    private boolean havingGroup;
     private Long groupId;
     private List<Long> subjectsId;
 

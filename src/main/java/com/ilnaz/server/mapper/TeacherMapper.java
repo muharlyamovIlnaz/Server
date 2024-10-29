@@ -9,7 +9,6 @@ public class TeacherMapper {
         teacher.setFirstName(teacherDto.getFirstName());
         teacher.setSecondName(teacherDto.getSecondName());
         teacher.setLastName(teacherDto.getLastName());
-        teacher.setHavingGroup(teacherDto.isHavingGroup());
         teacher.setGroupId(teacherDto.getGroupId());
         teacher.setSubjectsId(teacherDto.getSubjectsId());
         return teacher;
@@ -21,7 +20,6 @@ public class TeacherMapper {
         teacherDto.setFirstName(teacher.getFirstName());
         teacherDto.setSecondName(teacher.getSecondName());
         teacherDto.setLastName(teacher.getLastName());
-        teacherDto.setHavingGroup(teacher.isHavingGroup());
         teacherDto.setGroupId(teacher.getGroupId());
         teacherDto.setSubjectsId(teacher.getSubjectsId());
         return teacherDto;
