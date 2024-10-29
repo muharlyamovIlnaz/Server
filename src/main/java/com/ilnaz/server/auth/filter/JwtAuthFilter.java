@@ -7,6 +7,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthFilter implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -25,17 +31,19 @@ public class JwtAuthFilter implements Filter {
         try {
             String role = JwtUtil.extractRole(token);
 
-            // Пример проверки роли, можно передавать role в контроллер
             if (!"ROLE_ADMIN".equals(role)) {
                 httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }
 
-            // Пропускаем запрос дальше
             chain.doFilter(request, response);
 
         } catch (Exception e) {
             httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public void destroy() {
     }
 }

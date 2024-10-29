@@ -7,6 +7,14 @@ import com.ilnaz.server.repository.UserRepository;
 import com.ilnaz.server.repository.impl.UserRepositoryImpl;
 import com.ilnaz.server.service.UserService;
 import com.ilnaz.server.service.impl.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +27,10 @@ import java.sql.SQLException;
 public class UserRegisterController extends HttpServlet {
     private final UserService userService;
     private final ObjectMapper objectMapper;
+    private final Logger log;
 
     public UserRegisterController() throws SQLException {
+        this.log = LoggerFactory.getLogger(UserRegisterController.class);
 
         UserRepository userRepository = new UserRepositoryImpl(DBConfiguration.getConnection());
         userService = new UserServiceImpl(userRepository);
@@ -29,6 +39,7 @@ public class UserRegisterController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        log.info("Получен POST запрос /user/register: req: {}", req);
         try {
             UserDto userDto = objectMapper.readValue(req.getInputStream(), UserDto.class);
             userService.registerUser(userDto);

@@ -6,10 +6,9 @@ import java.util.Base64;
 public class CryptoUtils {
 
 
-    public static String generateStrongPasswordHash(String password) throws Exception {
+    public static String generateStrongPasswordHash(String password, byte[] salt) throws Exception {
         int iterations = 10000;
         char[] chars = password.toCharArray();
-        byte[] salt = getSalt();
 
         PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
@@ -17,10 +16,15 @@ public class CryptoUtils {
         return Base64.getEncoder().encodeToString(hash);
     }
 
-    private static byte[] getSalt() throws Exception {
+    public static byte[] getSalt() throws Exception {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
         return salt;
+    }
+
+    public static boolean validatePassword(String originalPassword, String storedPasswordHash, byte[] salt) throws Exception {
+        String hashedPassword = generateStrongPasswordHash(originalPassword, salt);
+        return hashedPassword.equals(storedPasswordHash);
     }
 }
