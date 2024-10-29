@@ -8,7 +8,7 @@ public class StudentDto {
     private String firstName;
     private String secondName;
     private String lastName;
-    private Long groupId;
+    private long groupId;
     private List<Long> subjectsId;
 
 }

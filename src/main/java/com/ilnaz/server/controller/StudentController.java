@@ -3,8 +3,6 @@ package com.ilnaz.server.controller;
 import com.ilnaz.server.config.DBConfiguration;
 import com.ilnaz.server.config.JsonConfiguration;
 import com.ilnaz.server.dto.StudentDto;
-import com.ilnaz.server.dto.TeacherDto;
-import com.ilnaz.server.repository.StudentRepository;
 import com.ilnaz.server.repository.impl.StudentRepositoryImpl;
 import com.ilnaz.server.service.StudentService;
 import com.ilnaz.server.service.impl.StudentServiceImpl;
