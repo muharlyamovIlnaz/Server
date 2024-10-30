@@ -10,6 +10,7 @@ import com.ilnaz.server.model.User;
 import com.ilnaz.server.repository.UserRepository;
 import com.ilnaz.server.service.UserService;
 import com.ilnaz.server.util.CryptoUtils;
+import com.ilnaz.server.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,6 @@ import java.util.Date;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private static final String SECRET_KEY = "your_secret_key";
     private final Logger log;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void loginUser(UserDto userDto, HttpServletResponse resp) throws Exception {
         log.info("Метод loginUser");
-        TokenResp tokenResp = new TokenResp();
         User user = userRepository.findByUsername(userDto.getUsername());
         byte[] salt = userRepository.getSaltByUserId(user.getId());
 
@@ -46,16 +45,10 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Invalid username or password");
         }
 
-        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-        String token = JWT.create()
-                .withSubject(user.getUsername())
-                .withClaim("role", user.getRole().toString())
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 3600 * 1000))
-                .sign(algorithm);
-        tokenResp.setToken(token);
 
-        String json = JsonConfiguration.getObjectMapper().writeValueAsString(tokenResp);
+        String token = JwtUtil.generateToken(user.getUsername(), String.valueOf(user.getRole()));
+
+        String json = JsonConfiguration.getObjectMapper().writeValueAsString(new TokenResp(token));
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().write(json);
     }
