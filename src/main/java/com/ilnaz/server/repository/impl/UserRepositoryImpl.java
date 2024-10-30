@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserRepositoryImpl implements UserRepository {
     private final Connection connection;
@@ -31,11 +32,16 @@ public class UserRepositoryImpl implements UserRepository {
                     insert into users(username, password, role)
                     values(?, ?, ?)
                     """;
-            PreparedStatement userPreparedStatement = connection.prepareStatement(userSql);
+            PreparedStatement userPreparedStatement = connection.prepareStatement(userSql, Statement.RETURN_GENERATED_KEYS);
             userPreparedStatement.setString(1, user.getUsername());
             userPreparedStatement.setString(2, user.getPassword());
             userPreparedStatement.setString(3, String.valueOf(user.getRole()));
             userPreparedStatement.executeUpdate();
+            ResultSet generatedKeys = userPreparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                long userId = generatedKeys.getLong(1);
+                user.setId(userId);
+            }
 
 
             String saltSql = """ 

@@ -1,12 +1,20 @@
 package com.ilnaz.server.auth.filter;
+
 import com.ilnaz.server.util.JwtUtil;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthFilter implements Filter {
+@WebFilter("/student/*")
+public class JwtAuthFilterStudent implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -31,7 +39,7 @@ public class JwtAuthFilter implements Filter {
         try {
             String role = JwtUtil.extractRole(token);
 
-            if (!"ROLE_ADMIN".equals(role)) {
+            if (!"ROLE_STUDENT".equals(role) && !"ROLE_ADMIN".equals(role)) {
                 httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;
             }

@@ -1,6 +1,6 @@
 package com.ilnaz.server.config;
 
-import com.ilnaz.server.auth.filter.JwtAuthFilter;
+import com.ilnaz.server.auth.filter.JwtAuthFilterTeacher;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -21,7 +21,7 @@ public class AppInitializer implements ServletContextListener {
 
     private void authConfig(ServletContextEvent sce){
         sce.getServletContext()
-                .addFilter("JwtAuthFilter", new JwtAuthFilter())
+                .addFilter("JwtAuthFilter", new JwtAuthFilterTeacher())
                 .addMappingForUrlPatterns(null, false, "/student/*");
     }
 }
