@@ -1,15 +1,14 @@
-package com.ilnaz.server.dto;
+package com.ilnaz.server.model;
 
 import lombok.Data;
 
 import java.util.List;
-
 @Data
-public class TeacherDto {
+public class Student {
+    private long id;
     private String firstName;
     private String secondName;
     private String lastName;
-    private long groupId;
+    private Long groupId;
     private List<Long> subjectsId;
-
 }

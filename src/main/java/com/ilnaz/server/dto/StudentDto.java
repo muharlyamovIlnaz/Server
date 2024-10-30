@@ -3,9 +3,8 @@ package com.ilnaz.server.dto;
 import lombok.Data;
 
 import java.util.List;
-
 @Data
-public class TeacherDto {
+public class StudentDto {
     private String firstName;
     private String secondName;
     private String lastName;

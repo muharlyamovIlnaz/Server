@@ -3,8 +3,9 @@ package com.ilnaz.server.controller;
 import com.ilnaz.server.config.DBConfiguration;
 import com.ilnaz.server.config.JsonConfiguration;
 import com.ilnaz.server.dto.TeacherDto;
-import com.ilnaz.server.repository.TeacherRepository;
+import com.ilnaz.server.repository.impl.TeacherRepositoryImpl;
 import com.ilnaz.server.service.TeacherService;
+import com.ilnaz.server.service.impl.TeacherServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,15 +31,12 @@ public class TeacherController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String pathInfo = req.getPathInfo(); // Это даст строку вида "/{id}" или null
+        String pathInfo = req.getPathInfo();
 
-        // Проверяем, передан ли ID
         if (pathInfo == null || pathInfo.equals("/")) {
 
-            // Если нет ID, значит это запрос на список всех учителей
             getAllTeachers(req, resp);
         } else {
-            // Если ID передан, обрабатываем запрос на конкретного учителя
             getTeacherById(req, resp, pathInfo);
         }
     }
@@ -81,12 +79,12 @@ public class TeacherController extends HttpServlet {
         teacherService.getTeacherById(teacherId, resp);
     }
 
-    protected TeacherService createTeacherService() throws SQLException {
-        return new TeacherService(createTeacherRepository());
+    protected TeacherServiceImpl createTeacherService() throws SQLException {
+        return new TeacherServiceImpl(createTeacherRepository());
     }
 
-    protected TeacherRepository createTeacherRepository() throws SQLException {
-        return new TeacherRepository(DBConfiguration.getConnection());
+    protected TeacherRepositoryImpl createTeacherRepository() throws SQLException {
+        return new TeacherRepositoryImpl(DBConfiguration.getConnection());
     }
 
 

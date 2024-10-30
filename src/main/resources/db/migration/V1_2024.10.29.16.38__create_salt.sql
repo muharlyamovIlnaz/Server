@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS salt (
+    user_id BIGSERIAL PRIMARY KEY,
+    salt_value BYTEA NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
